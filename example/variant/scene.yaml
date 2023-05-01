@@ -1,0 +1,28 @@
+PlaceId: 1235
+Name: Variant
+Streaming:
+  IntegrityMode: Default
+  OutBehavior: Default
+  Enabled: true
+  Radius:
+    Min: 256
+    Max: 2048
+Physics:
+  Gravity:  196.2
+  FallenPartDestroyHeight: -500
+Terrain:
+  Decoration: true
+  Water:
+    Transparency: 0.3
+    Reflectance: 1
+    Wave:
+      Size: 0.15
+      Speed: 10
+  Color:
+    Grass: 81C2E0
+  Controls:
+    EnableMouseLock: true
+    MobileAutoJumpEnabled: true
+Sound:
+  DistanceFactor: 3.33
+  DopplerScale: 1

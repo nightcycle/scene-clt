@@ -1,0 +1,7 @@
+recursive-include src/data rbxmk.exe
+recursive-include src/data remodel.exe
+recursive-include src/data empty.rbxl
+recursive-include src/data scene.rbxmk.lua
+recursive-include src/data scene.remodel.lua
+recursive-include src/data rojo.exe
+recursive-include src/data terrain.rbxm

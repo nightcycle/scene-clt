@@ -1,0 +1,1 @@
+pyinstaller --onefile src/__init__.py -n scene --additional-hooks-dir=hooks --add-data "src/data/rbxmk.exe;data/" --add-data "src/data/remodel.exe;data/" --add-data "src/data/empty.rbxl;data/" --add-data "src/data/scene.rbxmk.lua;data/" --add-data "src/data/scene.remodel.lua;data/" --add-data "src/data/rojo.exe;data/" --add-data "src/data/terrain.rbxm;data/"
