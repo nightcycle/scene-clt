@@ -214,7 +214,7 @@ def main():
 		os.makedirs(scene_dir_path+"/Workspace")
 		with open(scene_dir_path+"/scene.yaml", "w") as config_file:
 			config_file.write(yaml.safe_dump(default_config))
-		shutil.copy(get_data_file_path("terrain.rbxm", scene_dir_path + "/terrain.rbxm"))	
+		shutil.copy(get_data_file_path("terrain.rbxm"), scene_dir_path + "/terrain.rbxm")
 	else:
 		scene_path = sys.argv[1]
 
