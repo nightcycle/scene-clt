@@ -212,7 +212,7 @@ def main():
 		assert not os.path.exists(scene_dir_path), f"a scene already exists at {scene_dir_path}"
 		print(f"creating new scene at {scene_dir_path}")
 		os.makedirs(scene_dir_path+"/Workspace")
-		with open(scene_dir_path, "w") as config_file:
+		with open(scene_dir_path+"/scene.yaml", "w") as config_file:
 			config_file.write(yaml.safe_dump(default_config))
 		shutil.copy(get_data_file_path("terrain.rbxm", scene_dir_path + "/terrain.rbxm"))	
 	else:
