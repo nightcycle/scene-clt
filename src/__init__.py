@@ -266,7 +266,6 @@ def main():
 
 		# run rojo
 		with TemporaryDirectory() as temp_dir_path:
-			print(is_verbose)
 			with open(rojo_project_path, "r") as rojo_file:
 				if is_verbose:
 					print("reading " + rojo_project_path)
