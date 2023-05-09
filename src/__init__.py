@@ -297,11 +297,15 @@ def main():
 				
 				run_exe_process("rojo.exe", ["build", temp_rojo_path, "-o", scene_place_file_path], silent=not is_verbose)
 
-		# run remodel
-		run_exe_process("remodel.exe", ["run", get_data_file_path("scene.remodel.lua"), f"\"{json_str}\"", scene_place_file_path, scene_path], silent=not is_verbose)
+				# run remodel
+				run_exe_process("remodel.exe", ["run", get_data_file_path("scene.remodel.lua"), f"\"{json_str}\"", scene_place_file_path, scene_path], silent=not is_verbose)
 
-		# run rbxmk
-		run_exe_process("rbxmk.exe", ["run", get_data_file_path("scene.rbxmk.lua"), f"\"{json_str}\"", scene_place_file_path], silent=not is_verbose)
+				# run rbxmk
+				run_exe_process("rbxmk.exe", ["run", get_data_file_path("scene.rbxmk.lua"), f"\"{json_str}\"", scene_place_file_path], silent=not is_verbose)
+
+				# run rojo again
+				run_exe_process("rojo.exe", ["build", temp_rojo_path, "-o", scene_place_file_path], silent=not is_verbose)
+
 
 # prevent from running twice
 if __name__ == '__main__':
