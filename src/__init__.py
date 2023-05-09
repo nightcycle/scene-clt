@@ -5,6 +5,7 @@ import yaml
 import json
 import shutil
 import dpath
+from tempfile import TemporaryDirectory
 from luau.convert import from_dict
 from luau.roblox import write_script
 
@@ -90,12 +91,12 @@ Sky:
     Contrast: 0
     Tint: FFFFFF
     Ambient: 
-      Indoor: 000000
+      Indoor: \"000000\"
       Outdoor: 778DB0
     Exposure: 0
     ColorShift:
       Top: D8B474
-      Bottom: 000000
+      Bottom: \"000000\"
   GlobalShadows: true
   Technology: Voxel
   Time: 14
@@ -205,6 +206,7 @@ def run_exe_process(exe_name: str, args: list = [], silent=True):
 
 def main():
 	default_config = yaml.safe_load(DEFAULT_SCENE_CONFIG)
+	is_verbose = "-verbose" in sys.argv
 	if sys.argv[1] == "new":
 		scene_dir_path = "scene/main"
 		if len(sys.argv) > 2:
@@ -263,13 +265,44 @@ def main():
 			write_script(luau_config_script_build_path, "\n".join(content), skip_source_map=False)
 
 		# run rojo
-		run_exe_process("rojo.exe", ["build", rojo_project_path, "-o", scene_place_file_path])
+		with TemporaryDirectory() as temp_dir_path:
+			print(is_verbose)
+			with open(rojo_project_path, "r") as rojo_file:
+				if is_verbose:
+					print("reading " + rojo_project_path)
+				rojo_data = json.loads(rojo_file.read())
+				tree_data = rojo_data["tree"]
+				if not "Workspace" in tree_data:
+					if is_verbose:
+						print("adding workspace to rojo config file")
+					tree_data["Workspace"] = {
+						"$className": "Workspace",
+					}
+				workspace_data = tree_data["Workspace"]
+				# terrain_path = scene_path+"/terrain.rbxm"
+				# workspace_path = scene_path+"/Workspace"
+				
+				# for sub_path in os.listdir(workspace_path):
+				# 	name = os.path.splitext(sub_path)[0]
+				# 	if is_verbose:
+				# 		print(f"adding {sub_path} to rojo config file under workspace")
+				# 	workspace_data[name] = {
+				# 		"$path": os.path.abspath(workspace_path + "/" + sub_path)
+				# 	}
+
+				temp_rojo_path = temp_dir_path+"/default.project.json"
+				with open(temp_rojo_path, "w") as temp_rojo_file:
+					if is_verbose:
+						json.dumps(rojo_data, indent=5)
+					temp_rojo_file.write(json.dumps(rojo_data, indent=5))
+				
+				run_exe_process("rojo.exe", ["build", temp_rojo_path, "-o", scene_place_file_path], silent=not is_verbose)
 
 		# run remodel
-		run_exe_process("remodel.exe", ["run", get_data_file_path("scene.remodel.lua"), f"\"{json_str}\"", scene_place_file_path, scene_path])
+		run_exe_process("remodel.exe", ["run", get_data_file_path("scene.remodel.lua"), f"\"{json_str}\"", scene_place_file_path, scene_path], silent=not is_verbose)
 
 		# run rbxmk
-		run_exe_process("rbxmk.exe", ["run", get_data_file_path("scene.rbxmk.lua"), f"\"{json_str}\"", scene_place_file_path])
+		run_exe_process("rbxmk.exe", ["run", get_data_file_path("scene.rbxmk.lua"), f"\"{json_str}\"", scene_place_file_path], silent=not is_verbose)
 
 # prevent from running twice
 if __name__ == '__main__':

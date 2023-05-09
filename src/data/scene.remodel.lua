@@ -30,7 +30,7 @@ local place = remodel.readPlaceFile(SCENE_BUILD_PATH)
 
 -- Configure HttpService
 local httpService = place:GetService("HttpService")
-print("Configuring HttpService")
+print("configuring HttpService")
 remodel.setRawProperty(
 	httpService, 
 	"HttpEnabled",
@@ -39,8 +39,8 @@ remodel.setRawProperty(
 )
 
 -- Configure workspace
-print("Configuring workspace")
-local workspace = place.Workspace
+print("configuring workspace")
+local workspace = place:GetService("Workspace")
 clearAllChildren(workspace)
 
 remodel.setRawProperty(
@@ -83,20 +83,23 @@ remodel.setRawProperty(
 -- Add Terrain
 print("Loading terrain")
 for j, inst in ipairs(remodel.readModelFile(TERRAIN_PATH)) do
+
 	if inst.ClassName == "Terrain" then
+		print("terrain found, formatting")
 		for i, child in ipairs(workspace:GetChildren()) do
 			if child.ClassName == "Terrain" then
 				child:Destroy()
 			end
 		end
-		inst.Parent = workspace
+		print("adding terrain under place file")
+		inst.Parent = place:GetService("Workspace")
 		break
 	end
 end
 
 
 -- Configure camera
-print("Configuring Camera")
+print("configuring Camera")
 local camera = workspace:FindFirstChild("Camera")
 if camera then
 	remodel.setRawProperty(
@@ -109,7 +112,7 @@ end
 
 
 -- Move scene models to workspace
-print("Configuring Workspace Models")
+print("configuring Workspace Models")
 for i, dirName in ipairs(remodel.readDir(WORKSPACE_PATH)) do
 	for j, inst in ipairs(remodel.readModelFile(WORKSPACE_PATH.."/"..dirName)) do
 		print(" - "..inst.Name)
@@ -118,7 +121,7 @@ for i, dirName in ipairs(remodel.readDir(WORKSPACE_PATH)) do
 end
 
 -- Configure terrain
-print("Configuring Terrain")
+print("configuring Terrain")
 local terrain = workspace.Terrain
 remodel.setRawProperty(
 	terrain, 
@@ -165,7 +168,7 @@ remodel.setRawProperty(
 clearAllChildren(terrain)
 
 -- Configure clouds
-print("Configuring Clouds")
+print("configuring Clouds")
 local clouds = Instance.new("Clouds")
 clouds.Parent = terrain
 remodel.setRawProperty(
@@ -188,7 +191,7 @@ remodel.setRawProperty(
 )
 
 -- Configure lighting
-print("Configuring Lighting")
+print("configuring Lighting")
 local lighting = place:GetService("Lighting")
 remodel.setRawProperty(
 	lighting, 
@@ -259,7 +262,7 @@ remodel.setRawProperty(
 clearAllChildren(lighting)
 
 -- Atmosphere
-print("Configuring Atmosphere")
+print("configuring Atmosphere")
 local atmosphere = Instance.new("Atmosphere")
 atmosphere.Parent = lighting
 remodel.setRawProperty(
@@ -300,7 +303,7 @@ remodel.setRawProperty(
 )
 
 -- Sky
-print("Configuring Sky")
+print("configuring Sky")
 local sky = Instance.new("Sky")
 sky.Parent = lighting
 remodel.setRawProperty(
@@ -377,7 +380,7 @@ remodel.setRawProperty(
 )
 
 -- Bloom
-print("Configuring Bloom")
+print("configuring Bloom")
 local bloom = Instance.new("BloomEffect")
 bloom.Parent = lighting
 remodel.setRawProperty(
@@ -400,7 +403,7 @@ remodel.setRawProperty(
 )
 
 -- Blur
-print("Configuring Blur")
+print("configuring Blur")
 local blur = Instance.new("BlurEffect")
 blur.Parent = lighting
 remodel.setRawProperty(
@@ -411,7 +414,7 @@ remodel.setRawProperty(
 )
 
 -- Color Correction
-print("Configuring Color Correction")
+print("configuring Color Correction")
 local colorCorrection = Instance.new("ColorCorrectionEffect")
 colorCorrection.Parent = lighting
 remodel.setRawProperty(
@@ -440,7 +443,7 @@ remodel.setRawProperty(
 )
 
 -- Depth of Field
-print("Configuring Depth of Field")
+print("configuring Depth of Field")
 local depthOfField = Instance.new("DepthOfFieldEffect")
 depthOfField.Parent = lighting
 remodel.setRawProperty(
@@ -469,7 +472,7 @@ remodel.setRawProperty(
 )
 
 -- Sun rays
-print("Configuring Sun Rays")
+print("configuring Sun Rays")
 local sunRays = Instance.new("SunRaysEffect")
 sunRays.Parent = lighting
 remodel.setRawProperty(
@@ -486,7 +489,7 @@ remodel.setRawProperty(
 )
 
 -- Players
-print("Configuring Players")
+print("configuring Players")
 local Players = place:GetService("Players")
 remodel.setRawProperty(
 	Players, 
@@ -508,7 +511,7 @@ remodel.setRawProperty(
 )
 
 -- StarterPlayer
-print("Configuring StarterPlayer")
+print("configuring StarterPlayer")
 local StarterPlayer = place:GetService("StarterPlayer")
 remodel.setRawProperty(
 	StarterPlayer, 
@@ -584,7 +587,7 @@ remodel.setRawProperty(
 )
 
 -- SoundService
-print("Configuring SoundService")
+print("configuring SoundService")
 local SoundService = place:GetService("SoundService")
 remodel.setRawProperty(
 	SoundService, 
@@ -600,7 +603,7 @@ remodel.setRawProperty(
 )
 
 -- Chat
-print("Configuring Chat")
+print("configuring Chat")
 local chat = place:GetService("Chat")
 remodel.setRawProperty(
 	chat, 
@@ -610,7 +613,7 @@ remodel.setRawProperty(
 )
 
 -- TextChat
-print("Configuring TextChat")
+print("configuring TextChat")
 local textChatService = place:GetService("TextChatService")
 remodel.setRawProperty(
 	textChatService, 
@@ -626,7 +629,7 @@ remodel.setRawProperty(
 )
 
 -- BubbleChatConfiguration
-print("Configuring BubbleChat")
+print("configuring BubbleChat")
 local bubbleChatConfiguration = textChatService:FindFirstChild("BubbleChatConfiguration")
 if bubbleChatConfiguration then
 	remodel.setRawProperty(

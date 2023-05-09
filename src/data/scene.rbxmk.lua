@@ -9,6 +9,7 @@ local SCENE_BUILD_PATH = ARGS[2]
 local place = fs.read(SCENE_BUILD_PATH)
 
 -- set material overrides
+print("configuring material service")
 local MATERIAL_CONFIG = SCENE_CONFIG.Material
 local materialService = place:GetService("MaterialService")
 for k, v in pairs(MATERIAL_CONFIG) do
@@ -18,6 +19,7 @@ end
 
 
 -- set player enums
+print("configuring player")
 local PLAYER_CONFIG = SCENE_CONFIG.Player
 local CHARACTER_CONFIG = PLAYER_CONFIG.Character
 local starterPlayer = place:GetService("StarterPlayer")
@@ -33,6 +35,7 @@ else
 end
 
 -- set lighting technology
+print("configuring lighting")
 local SKY_CONFIG = SCENE_CONFIG.Sky
 local lighting = place:GetService("Lighting")
 local LightingTechnology = {
@@ -44,7 +47,9 @@ local LightingTechnology = {
 }
 lighting.Technology = types.token(LightingTechnology[SKY_CONFIG.Technology] or 1)
 
+
 -- set streaming modes
+print("configuring workspace streaming")
 local STREAM_CONFIG = SCENE_CONFIG.Streaming
 local StreamIntegrityModeValues = {
 	Default = 0,
@@ -61,5 +66,7 @@ local workspace = place:GetService("Workspace")
 workspace.StreamingIntegrityMode = types.token(StreamIntegrityModeValues[STREAM_CONFIG.IntegrityMode] or 0)
 workspace.StreamOutBehavior = types.token(StreamOutBehaviorValues[STREAM_CONFIG.OutBehavior] or 0)
 
+
 -- write to file
+print("writing to "..SCENE_BUILD_PATH)
 fs.write(SCENE_BUILD_PATH, place)
