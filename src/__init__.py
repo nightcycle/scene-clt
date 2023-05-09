@@ -288,13 +288,24 @@ def main():
 				# 	workspace_data[name] = {
 				# 		"$path": os.path.abspath(workspace_path + "/" + sub_path)
 				# 	}
+				final_rojo_data = {}
+				for path, value in dpath.search(rojo_data, '**', yielded=True):
+					key = os.path.split(path)[1]
+					if type(value) != dict and type(value) != list:
+						if key == "$path":
+							dpath.new(final_rojo_data, path, os.path.abspath(value).replace("\\", "/"))
+						else:
+							dpath.new(final_rojo_data, path, value)
 
 				temp_rojo_path = temp_dir_path+"/default.project.json"
+				if is_verbose:
+					print("ROJO", json.dumps(final_rojo_data, indent=5))
+
 				with open(temp_rojo_path, "w") as temp_rojo_file:
-					if is_verbose:
-						json.dumps(rojo_data, indent=5)
-					temp_rojo_file.write(json.dumps(rojo_data, indent=5))
-				
+					temp_rojo_file.write(json.dumps(final_rojo_data, indent=5))
+
+
+
 				run_exe_process("rojo.exe", ["build", temp_rojo_path, "-o", scene_place_file_path], silent=not is_verbose)
 
 				# run remodel
@@ -302,9 +313,6 @@ def main():
 
 				# run rbxmk
 				run_exe_process("rbxmk.exe", ["run", get_data_file_path("scene.rbxmk.lua"), f"\"{json_str}\"", scene_place_file_path], silent=not is_verbose)
-
-				# run rojo again
-				run_exe_process("rojo.exe", ["build", temp_rojo_path, "-o", scene_place_file_path], silent=not is_verbose)
 
 
 # prevent from running twice
