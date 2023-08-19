@@ -121,7 +121,10 @@ end
 
 -- Move instances into relevant services
 function moveIntoService(serviceDirPath, service)
-	if remodel.isDir(serviceDirPath) then
+	local isExistingDirectory, _msg = pcall(function()
+		remodel.isDir(serviceDirPath)
+	end)
+	if isExistingDirectory then
 		for i, dirName in ipairs(remodel.readDir(serviceDirPath)) do
 			for j, inst in ipairs(remodel.readModelFile(serviceDirPath.."/"..dirName)) do
 				print(" - "..inst.Name)
