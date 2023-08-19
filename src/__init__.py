@@ -271,13 +271,13 @@ def main():
 					print("reading " + rojo_project_path)
 				rojo_data = json.loads(rojo_file.read())
 				tree_data = rojo_data["tree"]
-				if not "Workspace" in tree_data:
-					if is_verbose:
-						print("adding workspace to rojo config file")
-					tree_data["Workspace"] = {
-						"$className": "Workspace",
-					}
-				workspace_data = tree_data["Workspace"]
+				# if not "Workspace" in tree_data:
+				# 	if is_verbose:
+				# 		print("adding workspace to rojo config file")
+				# 	tree_data["Workspace"] = {
+				# 		"$className": "Workspace",
+				# 	}
+				# workspace_data = tree_data["Workspace"]
 				# terrain_path = scene_path+"/terrain.rbxm"
 				# workspace_path = scene_path+"/Workspace"
 				

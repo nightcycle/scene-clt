@@ -8,6 +8,14 @@ local SCENE_DIR_PATH = ARGS[3]
 -- other constants
 local ASSET_PREFIX = "http://www.roblox.com/asset/?id="
 local WORKSPACE_PATH = SCENE_DIR_PATH .. "/Workspace"
+local SERVER_STORAGE_PATH = SCENE_DIR_PATH .. "/ServerStorage"
+local SOUND_SERVICE_PATH = SCENE_DIR_PATH .. "/SoundService"
+local MATERIAL_SERVICE_PATH = SCENE_DIR_PATH .. "/MaterialService"
+local REPLICATED_STORAGE_PATH = SCENE_DIR_PATH .. "/ReplicatedStorage"
+local REPLICATED_FIRST_PATH = SCENE_DIR_PATH .. "/ReplicatedFirst"
+local LIGHTING_PATH = SCENE_DIR_PATH .. "/Lighting"
+local STATER_PACK_PATH = SCENE_DIR_PATH .. "/StarterPack"
+
 local TERRAIN_PATH = SCENE_DIR_PATH .. "/terrain.rbxm"
 
 -- private functions
@@ -111,14 +119,25 @@ if camera then
 end
 
 
--- Move scene models to workspace
-print("configuring Workspace Models")
-for i, dirName in ipairs(remodel.readDir(WORKSPACE_PATH)) do
-	for j, inst in ipairs(remodel.readModelFile(WORKSPACE_PATH.."/"..dirName)) do
-		print(" - "..inst.Name)
-		inst.Parent = workspace
+-- Move instances into relevant services
+function moveIntoService(serviceDirPath, service)
+	if remodel.isDir(serviceDirPath) then
+		for i, dirName in ipairs(remodel.readDir(serviceDirPath)) do
+			for j, inst in ipairs(remodel.readModelFile(serviceDirPath.."/"..dirName)) do
+				print(" - "..inst.Name)
+				inst.Parent = service
+			end
+		end
 	end
 end
+moveIntoService(WORKSPACE_PATH, workspace)
+moveIntoService(SERVER_STORAGE_PATH, place:GetService("ServerStorage"))
+moveIntoService(SOUND_SERVICE_PATH, place:GetService("SoundService"))
+moveIntoService(REPLICATED_STORAGE_PATH, place:GetService("ReplicatedStorage"))
+moveIntoService(MATERIAL_SERVICE_PATH, place:GetService("MaterialService"))
+moveIntoService(REPLICATED_FIRST_PATH, place:GetService("ReplicatedFirst"))
+moveIntoService(LIGHTING_PATH, place:GetService("Lighting"))
+moveIntoService(STATER_PACK_PATH, place:GetService("StarterPack"))
 
 -- Configure terrain
 print("configuring Terrain")
